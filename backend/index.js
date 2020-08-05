@@ -5,6 +5,8 @@ const cors = require('cors');
 const router = express.Router();
 const app = express();
 require('dotenv').config();
+const path = require('path');
+const ngrok = require('ngrok');
 
 let userRoutes = require('./routes/user.route');
 
@@ -20,11 +22,20 @@ mongoose.connect(
 	}
 );
 
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(cors());
 app.use('/', userRoutes);
 
-app.listen(8000, () => {
+app.listen(process.env.PORT, () => {
 	console.log('server started at 8000');
+	(async function () {
+		const endPointAccessibleOnTheInternet = await ngrok.connect(
+			process.env.PORT
+		);
+		console.log(
+			`Publically accessible tunnel to localhost : ${process.env.PORT} is available on ${endPointAccessibleOnTheInternet}`
+		);
+	})();
 });

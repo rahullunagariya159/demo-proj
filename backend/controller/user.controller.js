@@ -152,3 +152,18 @@ exports.deleteUser = async (req, res) => {
 		});
 	}
 };
+
+exports.uploads = async (req, res) => {
+	console.log('calll');
+	console.log('request body', req.body.name);
+	console.log('request body', req.fileData);
+	try {
+		return res.json({
+			code: 202,
+			status: 'success',
+			message: 'file uploaded successfully',
+		});
+	} catch (error) {
+		console.log(error);
+	}
+};
