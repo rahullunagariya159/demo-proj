@@ -36,6 +36,7 @@ exports.register = async (req, res) => {
 			let newUser = new user();
 
 			newUser.email = req.body.email;
+			console.log(generateHash(req.body.password));
 			newUser.password = generateHash(req.body.password);
 
 			const regNewuser = await newUser.save();
